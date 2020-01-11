@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanyuenwei.com.dao.role.RoleMapper">
+
+  <resultMap id="BaseResultMap" type="com.huanyumanagement.dao.role.model.Role">
+    <id column="id" jdbcType="LONGVARCHAR" property="roleId"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="name" jdbcType="LONGVARCHAR" property="name"/>
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark"/>
+    <result column="data_scope" jdbcType="LONGVARCHAR" property="dataScope"/>
+    <result column="level" jdbcType="INTEGER" property="level"/>
+  </resultMap>
+  <sql id="Entity_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Entity_Where_Clause">
+    <where>
+      <foreach collection="entity.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    `id`, `create_time`, `name`, `remark`, `data_scope`, `level`
+  </sql>
+  <select id="selectByEntity" parameterType="com.huanyuenwei.com.dao.role.model.RoleEntity" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List"/>
+    from `role`
+    <if test="_parameter != null">
+      <include refid="Entity_Where_Clause"/>
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `role`
+    where `id` = #{roleId,jdbcType=LONGVARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from `role`
+    where `id` = #{roleId,jdbcType=LONGVARCHAR}
+  </delete>
+  <delete id="deleteByEntity" parameterType="com.huanyuenwei.com.dao.role.model.RoleEntity">
+    delete from `role`
+    <if test="_parameter != null">
+      <include refid="Entity_Where_Clause"/>
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.huanyumanagement.dao.role.model.Role">
+    <selectKey keyProperty="roleId" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into `role` (
+      `id`, 
+      `create_time`, 
+      `name`, 
+      `remark`, 
+      `data_scope`, 
+      `level`
+    )
+    values (
+      #{roleId,jdbcType=LONGVARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, 
+      #{name,jdbcType=LONGVARCHAR}, 
+      #{remark,jdbcType=LONGVARCHAR}, 
+      #{dataScope,jdbcType=LONGVARCHAR}, 
+      #{level,jdbcType=INTEGER}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huanyumanagement.dao.role.model.Role">
+    <selectKey keyProperty="roleId" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into `role`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        `id`,
+      </if>
+      <if test="createTime != null">
+        `create_time`,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="remark != null">
+        `remark`,
+      </if>
+      <if test="dataScope != null">
+        `data_scope`,
+      </if>
+      <if test="level != null">
+        `level`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="dataScope != null">
+        #{dataScope,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByEntity" parameterType="com.huanyuenwei.com.dao.role.model.RoleEntity" resultType="java.lang.Integer">
+    select count(*) from `role`
+    <if test="_parameter != null">
+      <include refid="Entity_Where_Clause"/>
+    </if>
+  </select>
+  <update id="updateByEntitySelective" parameterType="map">
+    update `role`
+    <set>
+        `id` = #{record.roleId,jdbcType=LONGVARCHAR},
+        `create_time` = #{record.createTime,jdbcType=TIMESTAMP},
+        `name` = #{record.name,jdbcType=LONGVARCHAR},
+        `remark` = #{record.remark,jdbcType=LONGVARCHAR},
+        `data_scope` = #{record.dataScope,jdbcType=LONGVARCHAR},
+        `level` = #{record.level,jdbcType=INTEGER},
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Entity_Where_Clause"/>
+    </if>
+  </update>
+  <update id="updateByEntity" parameterType="map">
+    update `role`
+    set `id` = #{record.roleId,jdbcType=LONGVARCHAR}, 
+`create_time` = #{record.createTime,jdbcType=TIMESTAMP}, 
+`name` = #{record.name,jdbcType=LONGVARCHAR}, 
+`remark` = #{record.remark,jdbcType=LONGVARCHAR}, 
+`data_scope` = #{record.dataScope,jdbcType=LONGVARCHAR}, 
+`level` = #{record.level,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Entity_Where_Clause"/>
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huanyumanagement.dao.role.model.Role">
+    update `role`
+    <set>
+        <if test="roleId != null">
+          `id` = #{roleId,jdbcType=LONGVARCHAR},
+        </if>
+        <if test="createTime != null">
+          `create_time` = #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="name != null">
+          `name` = #{name,jdbcType=LONGVARCHAR},
+        </if>
+        <if test="remark != null">
+          `remark` = #{remark,jdbcType=LONGVARCHAR},
+        </if>
+        <if test="dataScope != null">
+          `data_scope` = #{dataScope,jdbcType=LONGVARCHAR},
+        </if>
+        <if test="level != null">
+          `level` = #{level,jdbcType=INTEGER},
+        </if>
+    </set>
+    where `id` = #{roleId,jdbcType=LONGVARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huanyumanagement.dao.role.model.Role">
+    update `role`
+    set
+        `id` = #{roleId,jdbcType=LONGVARCHAR}, 
+        `create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+        `name` = #{name,jdbcType=LONGVARCHAR}, 
+        `remark` = #{remark,jdbcType=LONGVARCHAR}, 
+        `data_scope` = #{dataScope,jdbcType=LONGVARCHAR}, 
+        `level` = #{level,jdbcType=INTEGER}
+    where `id` = #{roleId,jdbcType=LONGVARCHAR}
+  </update>
+</mapper>
